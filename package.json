@@ -1,0 +1,20 @@
+{
+  "name": "multi-tenant-api",
+  "version": "1.0.0",
+  "description": "Resilient multi-tenant API with bulkhead pattern",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node src/app.js"
+  },
+  "author": "Jitya",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "opossum": "^9.0.0",
+    "pg": "^8.19.0",
+    "piscina": "^5.1.4",
+    "rate-limiter-flexible": "^9.1.1"
+  }
+}
