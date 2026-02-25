@@ -1,28 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const { Pool } = require("pg");
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+const { getPoolByTier } = require("./db");
 
 router.get("/data", async (req, res) => {
-  const tier = req.get("X-Tenant-Tier");
-
-  if (!tier) {
-    return res.status(400).json({ error: "Missing X-Tenant-Tier header" });
-  }
+  const tier = req.header("X-Tenant-Tier");
 
   try {
+    const pool = getPoolByTier(tier);
+
     const result = await pool.query(
       "SELECT * FROM tenant_data WHERE tier = $1",
-      [tier.toLowerCase()]
+      [tier]
     );
 
-    res.json(result.rows);
+    res.status(200).json(result.rows);
   } catch (err) {
-    console.error("DB ERROR:", err);
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
   }
 });
 
